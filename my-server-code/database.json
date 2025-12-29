@@ -1,1 +1,35 @@
-{}
+{
+  "users": [
+    { "id": 1, "userid": "JASLYN_ADMIN", "password": "admin2025", "name": "Jaslyn Kaur", "role": "staff", "staffType": "super_admin" },
+    { "id": 2, "userid": "KAUSHI2025", "password": "student123", "name": "Kaushikanath Segaran", "role": "student", "staffType": null }
+  ],
+  "aboutData": {
+    "description": "Welcome to the official portal of the UNIMY Student Representative Council (SRC). We are a student-elected body dedicated to serving as the bridge between the student community and the university administration.",
+    "mission": "To proactively advocate for student rights, enhance the quality of campus life through diverse events, and foster a supportive academic environment for all majors.",
+    "vision": "To cultivate a united, empowered, and dynamic student community that produces future-ready leaders and innovators.",
+    "role": "We facilitate communication, manage student clubs & societies, provide welfare support, and organize skill-building workshops."
+  },
+  "announcements": [
+    { "id": 1, "title": " ⚠️  FINAL EXAM DOCKET READY", "content": "Your exam dockets for the Jan 2026 semester are available for download via the student portal.", "date": "2025-12-18", "currentUser": "System" },
+    { "id": 2, "title": " 📢  Campus Wi-Fi Maintenance", "content": "The library Wi-Fi will be down for upgrades this Saturday from 9 AM to 12 PM.", "date": "2025-12-28", "currentUser": "System" },
+    { "id": 3, "title": " 🎉  Happy New Year 2026", "content": "SRC wishes everyone a fantastic year ahead! Classes resume on Jan 5th.", "date": "2025-12-31", "currentUser": "System" }
+  ],
+  "events": [
+    { "id": 1, "title": " 🏆  Inter-Uni Valorant Championship", "date": "2025-12-24", "time": "10:00 AM - 6:00 PM", "location": "Computer Lab 3", "organizer": "E-Sports Club", "description": "Prize pool: RM2000. Registration closes this Friday. Open to all faculties.", "currentUser": "System" },
+    { "id": 2, "title": " 🤖  AI & Robotics Workshop", "date": "2026-01-10", "time": "2:00 PM - 5:00 PM", "location": "Auditorium A", "organizer": "Tech Club", "description": "Learn the basics of Arduino and AI integration. Free entry for students.", "currentUser": "System" },
+    { "id": 3, "title": " 🍔  Welcome Back BBQ", "date": "2026-01-05", "time": "6:00 PM - 9:00 PM", "location": "Student Lounge", "organizer": "SRC Welfare", "description": "Free food and drinks for all returning students!", "currentUser": "System" }
+  ],
+  "members": [
+    { "id": 1, "name": "Jaslyn Kaur", "role": "President", "image": "images/im1.png" },
+    { "id": 2, "name": "Kaushikanath", "role": "Vice President", "image": "images/im2.png" },
+    { "id": 3, "name": "Sarah Lee", "role": "Secretary", "image": "images/im3.png" },
+    { "id": 4, "name": "Ahmad Ali", "role": "Treasurer", "image": "images/im4.png" }
+  ],
+  "faqs": [
+    { "id": 1, "question": "How do I reset my student portal password?", "answer": "Contact the IT Helpdesk at Level 2 or email it@unimy.edu.my." },
+    { "id": 2, "question": "How do I join a club?", "answer": "Visit the 'Clubs' tab or attend the Club Fair during orientation week." },
+    { "id": 3, "question": "Where is the SRC office?", "answer": "We are located at the Student Hub, Level 1, opposite the cafeteria." }
+  ],
+  "chats": [],
+  "logs": []
+}
