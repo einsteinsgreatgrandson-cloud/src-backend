@@ -13,6 +13,11 @@ app.use(bodyParser.json());
 // FILE PATH for storage
 const DB_FILE = path.join(__dirname, 'database.json');
 
+// --- TIMEZONE HELPER (Forces Malaysia Time) ---
+const getMYTime = () => {
+    return new Date().toLocaleString("en-US", { timeZone: "Asia/Kuala_Lumpur" });
+};
+
 // --- DEFAULT DATA ---
 let data = {
     users: [
@@ -47,7 +52,6 @@ function loadData() {
     if (fs.existsSync(DB_FILE)) {
         try {
             const raw = fs.readFileSync(DB_FILE);
-            // If file is empty JSON object {}, stick to defaults.
             const fileData = JSON.parse(raw);
             if(Object.keys(fileData).length > 0) {
                 data = fileData;
@@ -57,8 +61,10 @@ function loadData() {
     } else { saveData(); }
 }
 function saveData() { fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2)); }
+
 const addLog = (action, user, details) => {
-    data.logs.unshift({ id: Date.now(), timestamp: new Date().toLocaleString(), action, user, details });
+    // FIX: Using getMYTime() here
+    data.logs.unshift({ id: Date.now(), timestamp: getMYTime(), action, user, details });
     saveData();
 };
 
@@ -89,7 +95,8 @@ app.post('/api/about', (req, res) => {
 });
 
 app.post('/api/chat', (req, res) => {
-    data.chats.push({ id: Date.now(), student: req.body.student, text: req.body.text, sender: req.body.sender, timestamp: new Date().toLocaleTimeString() });
+    // FIX: Using getMYTime() here too
+    data.chats.push({ id: Date.now(), student: req.body.student, text: req.body.text, sender: req.body.sender, timestamp: getMYTime() });
     saveData();
     res.json({ success: true });
 });
