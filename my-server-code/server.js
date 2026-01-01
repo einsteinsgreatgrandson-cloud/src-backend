@@ -10,15 +10,14 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(bodyParser.json());
 
-// FILE PATH for storage
 const DB_FILE = path.join(__dirname, 'database.json');
 
-// --- TIMEZONE HELPER (Forces Malaysia Time) ---
+// TIMEZONE HELPER
 const getMYTime = () => {
     return new Date().toLocaleString("en-US", { timeZone: "Asia/Kuala_Lumpur" });
 };
 
-// --- DEFAULT DATA ---
+// --- DEFAULT DATA (UPDATED WITH PRE-LOADED EVENT & COUNTDOWN) ---
 let data = {
     users: [
         { id: 1, userid: 'JASLYN_ADMIN', password: 'admin2025', name: 'Jaslyn Kaur', role: 'staff', staffType: 'super_admin' },
@@ -28,13 +27,28 @@ let data = {
         description: "Welcome to the official portal of the UNIMY Student Representative Council (SRC). We are a student-elected body dedicated to serving as the bridge between the student community and the university administration.",
         mission: "To proactively advocate for student rights, enhance the quality of campus life through diverse events, and foster a supportive academic environment for all majors.",
         vision: "To cultivate a united, empowered, and dynamic student community that produces future-ready leaders and innovators.",
-        role: "We facilitate communication, manage student clubs & societies, provide welfare support, and organize skill-building workshops."
+        role: "We facilitate communication, manage student clubs & societies, provide welfare support, and organize skill-building workshops.",
+        
+        // PRE-LOADED COUNTDOWN
+        countdownTitle: "UNIMY Grand Gala 2026",
+        countdownTarget: "2026-03-01T20:00"
     },
     announcements: [
         { id: 1, title: ' ⚠️  FINAL EXAM DOCKET READY', content: 'Your exam dockets for the Jan 2026 semester are available for download.', date: '2025-12-18', currentUser: 'System' }
     ],
     events: [
-        { id: 1, title: ' 🏆  Inter-Uni Valorant Championship', date: '2025-12-24', time: '10:00 AM - 6:00 PM', location: 'Computer Lab 3', organizer: 'E-Sports Club', description: 'Prize pool: RM2000. Registration closes this Friday.', currentUser: 'System' }
+        // PRE-LOADED EVENT
+        { 
+            id: 1, 
+            title: ' ✨ UNIMY Grand Gala 2026', 
+            date: '2026-03-01', 
+            time: '20:00', 
+            location: 'Main Grand Ballroom', 
+            organizer: 'SRC High Council', 
+            description: 'The most anticipated night of the year! Join us for a night of music, food, and awards.', 
+            currentUser: 'System' 
+        },
+        { id: 2, title: ' 🏆  Inter-Uni Valorant Championship', date: '2025-12-24', time: '10:00', location: 'Computer Lab 3', organizer: 'E-Sports Club', description: 'Prize pool: RM2000.', currentUser: 'System' }
     ],
     members: [
         { id: 1, name: 'Jaslyn Kaur', role: 'President', image: 'images/im1.png' },
@@ -63,7 +77,6 @@ function loadData() {
 function saveData() { fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2)); }
 
 const addLog = (action, user, details) => {
-    // FIX: Using getMYTime() here
     data.logs.unshift({ id: Date.now(), timestamp: getMYTime(), action, user, details });
     saveData();
 };
@@ -95,7 +108,6 @@ app.post('/api/about', (req, res) => {
 });
 
 app.post('/api/chat', (req, res) => {
-    // FIX: Using getMYTime() here too
     data.chats.push({ id: Date.now(), student: req.body.student, text: req.body.text, sender: req.body.sender, timestamp: getMYTime() });
     saveData();
     res.json({ success: true });
