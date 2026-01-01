@@ -17,7 +17,7 @@ const getMYTime = () => {
     return new Date().toLocaleString("en-US", { timeZone: "Asia/Kuala_Lumpur" });
 };
 
-// --- DEFAULT DATA (UPDATED WITH PRE-LOADED EVENT & COUNTDOWN) ---
+// --- DEFAULT DATA (UPDATED WITH MORE EVENTS) ---
 let data = {
     users: [
         { id: 1, userid: 'JASLYN_ADMIN', password: 'admin2025', name: 'Jaslyn Kaur', role: 'staff', staffType: 'super_admin' },
@@ -29,15 +29,16 @@ let data = {
         vision: "To cultivate a united, empowered, and dynamic student community that produces future-ready leaders and innovators.",
         role: "We facilitate communication, manage student clubs & societies, provide welfare support, and organize skill-building workshops.",
         
-        // PRE-LOADED COUNTDOWN
+        // DEFAULT COUNTDOWN (Will appear after you delete database.json)
         countdownTitle: "UNIMY Grand Gala 2026",
         countdownTarget: "2026-03-01T20:00"
     },
     announcements: [
-        { id: 1, title: ' ⚠️  FINAL EXAM DOCKET READY', content: 'Your exam dockets for the Jan 2026 semester are available for download.', date: '2025-12-18', currentUser: 'System' }
+        { id: 1, title: ' ⚠️  FINAL EXAM DOCKET READY', content: 'Your exam dockets for the Jan 2026 semester are available for download via the Student Portal.', date: '2025-12-18', currentUser: 'System' },
+        { id: 2, title: ' 🚌  Shuttle Bus Schedule Update', content: 'Starting next week, the shuttle bus will arrive at the hostel every 30 minutes instead of 1 hour.', date: '2025-12-28', currentUser: 'System' }
     ],
     events: [
-        // PRE-LOADED EVENT
+        // EVENT 1: The Countdown Target
         { 
             id: 1, 
             title: ' ✨ UNIMY Grand Gala 2026', 
@@ -45,17 +46,61 @@ let data = {
             time: '20:00', 
             location: 'Main Grand Ballroom', 
             organizer: 'SRC High Council', 
-            description: 'The most anticipated night of the year! Join us for a night of music, food, and awards.', 
+            description: 'The most anticipated night of the year! Join us for a night of music, food, and awards. Dress code: Black Tie.', 
             currentUser: 'System' 
         },
-        { id: 2, title: ' 🏆  Inter-Uni Valorant Championship', date: '2025-12-24', time: '10:00', location: 'Computer Lab 3', organizer: 'E-Sports Club', description: 'Prize pool: RM2000.', currentUser: 'System' }
+        // EVENT 2: E-Sports
+        { 
+            id: 2, 
+            title: ' 🏆  Inter-Uni Valorant Championship', 
+            date: '2025-12-24', 
+            time: '10:00', 
+            location: 'Computer Lab 3', 
+            organizer: 'E-Sports Club', 
+            description: 'Compete against other universities. Prize pool: RM2000. Registration closes this Friday.', 
+            currentUser: 'System' 
+        },
+        // EVENT 3: Cyber (For you!)
+        { 
+            id: 3, 
+            title: ' 🔐  Cybersecurity Workshop: Ethical Hacking', 
+            date: '2026-01-15', 
+            time: '14:00', 
+            location: 'Auditorium A', 
+            organizer: 'Tech Club', 
+            description: 'Learn the basics of penetration testing and network defense with industry experts.', 
+            currentUser: 'System' 
+        },
+        // EVENT 4: Sports
+        { 
+            id: 4, 
+            title: ' ⚽  Futsal Friendly Match', 
+            date: '2026-01-20', 
+            time: '17:00', 
+            location: 'Sports Complex', 
+            organizer: 'Sports Club', 
+            description: 'Staff vs Students friendly match. Come support your team!', 
+            currentUser: 'System' 
+        },
+        // EVENT 5: Social
+        { 
+            id: 5, 
+            title: ' 🍕  Late Night Study Snacks', 
+            date: '2026-01-10', 
+            time: '21:00', 
+            location: 'Student Lounge', 
+            organizer: 'Welfare Bureau', 
+            description: 'Free pizza and coffee for all students preparing for mid-terms.', 
+            currentUser: 'System' 
+        }
     ],
     members: [
         { id: 1, name: 'Jaslyn Kaur', role: 'President', image: 'images/im1.png' },
         { id: 2, name: 'Kaushikanath', role: 'Vice President', image: 'images/im2.png' }
     ],
     faqs: [
-        { id: 1, question: 'How do I reset my student portal password?', answer: 'Contact IT Helpdesk.' }
+        { id: 1, question: 'How do I reset my student portal password?', answer: 'Contact IT Helpdesk.' },
+        { id: 2, question: 'Where can I apply for event funding?', answer: 'Submit a proposal form to the SRC Treasurer at the office.' }
     ],
     chats: [],
     logs: []
@@ -67,6 +112,7 @@ function loadData() {
         try {
             const raw = fs.readFileSync(DB_FILE);
             const fileData = JSON.parse(raw);
+            // Safety check: if file is empty or corrupted, use defaults
             if(Object.keys(fileData).length > 0) {
                 data = fileData;
                 console.log("Loaded data from database.json");
