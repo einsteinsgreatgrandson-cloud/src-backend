@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Student Portal - UNIMY SRC</title>
+    <link rel="stylesheet" href="css/theme.css">
+    <style>
+        /* --- 1. CORE THEME --- */
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            margin: 0; 
+            background-color: #050505; 
+            color: #e0e0e0; 
+            overflow-x: hidden; 
+            min-height: 100vh;
+        }
+
+        /* --- 2. LIQUID CHROME BACKGROUND --- */
+        .background-fx {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; overflow: hidden; pointer-events: none;
+        }
+
+        .chrome-shape {
+            position: absolute; border-radius: 50%;
+            border: 40px solid rgba(255, 255, 255, 0.15);
+            box-shadow: inset 10px 10px 40px rgba(0,0,0,0.8), inset -5px -5px 20px rgba(255,255,255,0.4), 10px 10px 40px rgba(0,0,0,0.6), -2px -2px 15px rgba(255,255,255,0.2);
+            filter: blur(2px); opacity: 0.8;
+            animation: floatRotate 20s infinite linear;
+        }
+
+        .shape-1 { width: 500px; height: 500px; top: 20%; left: -150px; transform: rotateX(40deg) rotateY(20deg); }
+        .shape-2 { width: 600px; height: 600px; bottom: -100px; right: -150px; border-width: 60px; transform: rotateX(60deg) rotateY(-20deg); animation-delay: -5s; }
+        .shape-3 { width: 200px; height: 200px; top: 10%; right: 20%; border-width: 20px; background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), rgba(50,50,50,0.1)); border: none; box-shadow: 0 0 30px rgba(255,255,255,0.1); }
+
+        @keyframes floatRotate {
+            0% { transform: rotate(0deg) translate(0, 0); }
+            50% { transform: rotate(180deg) translate(30px, 30px); }
+            100% { transform: rotate(360deg) translate(0, 0); }
+        }
+
+        /* --- 3. HEADER --- */
+        header { background: rgba(10,10,10,0.6); backdrop-filter: blur(15px); padding: 20px 40px; border-bottom: 1px solid rgba(255,255,255,0.05); position: sticky; top: 0; z-index: 100; }
+        .header-container { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; }
+        .logo-text h1 { margin: 0; font-size: 1.5rem; color: white; letter-spacing: 2px; text-transform: uppercase; font-weight: 800; }
+        .logo-text span { color: #dc143c; }
+        
+        .search-container input { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 12px 25px; border-radius: 30px; color: white; width: 400px; transition: 0.3s; }
+        .search-container input:focus { background: rgba(255,255,255,0.1); width: 450px; outline: none; border-color: #555; }
+        .header-right button { background: transparent; border: 1px solid #dc143c; color: #dc143c; padding: 8px 25px; border-radius: 30px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .header-right button:hover { background: #dc143c; color: white; }
+
+        /* --- 4. MAIN LAYOUT --- */
+        main { padding: 60px 20px; max-width: 1300px; margin: 0 auto; padding-bottom: 150px; }
+
+        .hero-section { text-align: center; margin-bottom: 60px; }
+        .hero-title { font-size: 3.5rem; font-weight: 800; margin: 0 0 20px 0; color: white; text-shadow: 0 0 20px rgba(255,255,255,0.3); }
+        .hero-desc { color: #bbb; max-width: 700px; margin: 0 auto; font-size: 1.1rem; line-height: 1.6; }
+
+        /* INFO CARDS */
+        .info-cards-row { display: flex; gap: 30px; justify-content: center; margin-bottom: 80px; flex-wrap: wrap; }
+        .info-card { flex: 1; min-width: 300px; max-width: 350px; background: #0f0f0f; border: 1px solid #222; border-left: 4px solid #dc143c; padding: 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: 0.3s; }
+        .info-card:hover { transform: translateY(-5px); background: #151515; }
+        .info-card h3 { color: #dc143c; margin-top: 0; display: flex; align-items: center; gap: 10px; font-size: 1.2rem; }
+        .info-card p { color: #888; font-size: 0.95rem; line-height: 1.5; margin-bottom: 0; }
+
+        /* COUNTDOWN BAR */
+        .countdown-glass-bar { width: 100%; max-width: 1000px; margin: 0 auto 80px auto; background: rgba(255, 255, 255, 0.03); border-top: 1px solid rgba(255, 255, 255, 0.3); border-bottom: 1px solid rgba(255, 255, 255, 0.05); border-radius: 50px; padding: 20px 50px; display: flex; justify-content: space-between; align-items: center; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .count-left { text-align: left; }
+        .count-label { color: #777; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px; display: block; }
+        .count-event-name { color: #dc143c; font-weight: bold; font-size: 1.1rem; }
+        .count-right { text-align: right; }
+        .count-time { font-family: 'Segoe UI', monospace; font-size: 2.5rem; font-weight: 700; color: white; text-shadow: 0 0 15px rgba(255,255,255,0.4); }
+
+        /* NAV BUTTONS */
+        .nav-grid { display: flex; justify-content: center; gap: 25px; flex-wrap: wrap; }
+        .nav-btn { width: 160px; height: 160px; background: rgba(20, 20, 20, 0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; backdrop-filter: blur(10px); }
+        .nav-btn:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.3); transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.5); }
+        .nav-icon { font-size: 3rem; margin-bottom: 15px; filter: grayscale(1); transition: 0.3s; }
+        .nav-btn:hover .nav-icon { filter: grayscale(0); transform: scale(1.1); }
+        .nav-label { color: #ccc; font-weight: 500; }
+
+        /* SECTIONS */
+        .page-section { display: none; padding-top: 20px; animation: fadeUp 0.5s ease; }
+        .page-section.active { display: block; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .content-card { background: #111; border: 1px solid #333; padding: 25px; margin-bottom: 15px; border-radius: 12px; }
+        .back-btn { background: none; border: none; color: #dc143c; cursor: pointer; font-size: 1.1rem; margin-bottom: 20px; font-weight: bold; }
+
+        /* Chat & Modal */
+        .chat-box-container { background: #111; border: 1px solid #333; height: 500px; display: flex; flex-direction: column; border-radius: 15px; }
+        .chat-messages { flex: 1; overflow-y: auto; padding: 20px; }
+        .chat-bubble { padding: 10px 15px; border-radius: 20px; margin-bottom: 10px; max-width: 70%; }
+        .my-msg { background: #dc143c; align-self: flex-end; margin-left: auto; }
+        .their-msg { background: #333; align-self: flex-start; }
+        .chat-input-area { padding: 15px; display: flex; gap: 10px; background: #151515; border-radius: 0 0 15px 15px; }
+        
+        .modal { display: none; position: fixed; z-index: 200; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); justify-content: center; align-items: center; }
+        .modal-content { background: #151515; padding: 40px; width: 90%; max-width: 600px; border-radius: 20px; border: 1px solid #dc143c; position: relative; }
+
+        /* ==========================================================================
+           MOBILE OPTIMIZATION (THE FIX)
+           ========================================================================== */
+        @media (max-width: 768px) {
+            /* 1. Header Fixes */
+            header { padding: 15px 20px; }
+            .header-container { flex-direction: column; gap: 15px; align-items: flex-start; }
+            .search-container { width: 100%; }
+            .search-container input { width: 100%; }
+            .header-right { width: 100%; display: flex; justify-content: space-between; align-items: center; margin-top: 5px; }
+            
+            /* 2. Hero & Text */
+            .hero-title { font-size: 2.2rem; }
+            .hero-desc { font-size: 1rem; padding: 0 10px; }
+            
+            /* 3. Stack Info Cards */
+            .info-cards-row { flex-direction: column; gap: 15px; margin-bottom: 40px; }
+            .info-card { width: 100%; max-width: none; box-sizing: border-box; }
+
+            /* 4. Fix Countdown Bar Layout (Stack vertically) */
+            .countdown-glass-bar { 
+                flex-direction: column; 
+                text-align: center; 
+                border-radius: 20px;
+                padding: 25px 20px;
+                gap: 15px;
+                margin-bottom: 40px;
+            }
+            .count-left, .count-right { text-align: center; width: 100%; }
+            .count-time { font-size: 1.8rem; margin-top: 5px; }
+            
+            /* 5. Nav Buttons (2 Columns) */
+            .nav-grid { gap: 15px; }
+            .nav-btn { width: 45%; height: 130px; } /* Fits 2 per row nicely */
+            .nav-icon { font-size: 2.5rem; margin-bottom: 10px; }
+
+            /* 6. Background shapes (Shrink them so they don't block text) */
+            .shape-1 { width: 200px; height: 200px; top: 10%; left: -50px; opacity: 0.5; }
+            .shape-2 { width: 250px; height: 250px; bottom: 0; right: -50px; opacity: 0.5; }
+            
+            /* 7. Modal Fix */
+            .modal-content { width: 85%; padding: 25px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background-fx">
+        <div class="chrome-shape shape-1"></div>
+        <div class="chrome-shape shape-2"></div>
+        <div class="chrome-shape shape-3"></div>
+    </div>
+
+    <header>
+        <div class="header-container">
+            <div class="logo-text"><h1>UNIMY <span>SRC</span></h1></div>
+            <div class="search-container">
+                <input type="text" id="top-search" onkeyup="performSearch()" placeholder="Search...">
+            </div>
+            <div class="header-right">
+                <span style="color: #888; margin-right: 15px; font-size:0.9rem;">ID: <span id="student-name" style="color:white;">Student</span></span>
+                <button onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div id="section-home" class="page-section active">
+            
+            <div class="hero-section">
+                <h1 class="hero-title">About UNIMY SRC</h1>
+                <p class="hero-desc" id="display-desc">Loading portal content...</p>
+            </div>
+
+            <div class="info-cards-row">
+                <div class="info-card">
+                    <h3>🚀 Our Mission</h3>
+                    <p id="display-mission">Loading...</p>
+                </div>
+                <div class="info-card">
+                    <h3>👁️ Our Vision</h3>
+                    <p id="display-vision">Loading...</p>
+                </div>
+                <div class="info-card">
+                    <h3>🤝 Our Role</h3>
+                    <p id="display-role">Loading...</p>
+                </div>
+            </div>
+
+            <div class="countdown-glass-bar" id="countdown-banner" style="display:none;">
+                <div class="count-left">
+                    <span class="count-label">NEXT MAJOR EVENT</span>
+                    <div class="count-event-name" id="countdown-event-name">Loading...</div>
+                </div>
+                <div class="count-right">
+                    <div class="count-time" id="countdown-timer">00 : 00 : 00 : 00</div>
+                </div>
+            </div>
+
+            <div class="nav-grid">
+                <div class="nav-btn" onclick="showSection('section-notices')">
+                    <span class="nav-icon">📢</span><span class="nav-label">Notices</span>
+                </div>
+                <div class="nav-btn" onclick="showSection('section-events')">
+                    <span class="nav-icon">📅</span><span class="nav-label">Events</span>
+                </div>
+                <div class="nav-btn" onclick="showSection('section-about')">
+                    <span class="nav-icon">👥</span><span class="nav-label">Members</span>
+                </div>
+                <div class="nav-btn" onclick="showSection('section-help')">
+                    <span class="nav-icon">❓</span><span class="nav-label">Help</span>
+                </div>
+                <div class="nav-btn" onclick="showSection('section-chat')">
+                    <span class="nav-icon">💬</span><span class="nav-label">Chat</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="section-notices" class="page-section">
+            <button class="back-btn" onclick="goHome()">⬅ Back Home</button>
+            <h2>Important Notices</h2><div id="notices-list"></div>
+        </div>
+
+        <div id="section-events" class="page-section">
+            <button class="back-btn" onclick="goHome()">⬅ Back Home</button>
+            <h2>Upcoming Events</h2><div id="events-list"></div>
+        </div>
+
+        <div id="section-about" class="page-section">
+            <button class="back-btn" onclick="goHome()">⬅ Back Home</button>
+            <h2>Committee Members</h2><div id="members-list"></div>
+        </div>
+
+        <div id="section-help" class="page-section">
+            <button class="back-btn" onclick="goHome()">⬅ Back Home</button>
+            <h2>Help Center</h2><div id="faq-list"></div>
+        </div>
+
+        <div id="section-chat" class="page-section">
+            <button class="back-btn" onclick="goHome()">⬅ Back Home</button>
+            <h2>Live Support</h2>
+            <div class="chat-box-container">
+                <div id="chat-history" class="chat-messages"></div>
+                <div class="chat-input-area">
+                    <input type="text" id="chat-input" placeholder="Message SRC Staff..." style="flex:1; background:rgba(255,255,255,0.1); border:none; padding:15px; border-radius:30px; color:white; outline:none;">
+                    <button onclick="sendChat()" style="background:#dc143c; border:none; padding: 0 25px; border-radius: 30px; color:white; font-weight:bold; cursor:pointer;">Send</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="section-search" class="page-section">
+            <button class="back-btn" onclick="goHome()">⬅ Back Home</button>
+            <h2>Search Results</h2><div id="search-results"></div>
+        </div>
+    </main>
+
+    <div id="event-modal" class="modal">
+        <div class="modal-content">
+            <span style="position:absolute; top:20px; right:20px; cursor:pointer; font-size:1.5rem;" onclick="closeModal()">&times;</span>
+            <h2 id="modal-title" style="color:#dc143c; margin-top:0;">Title</h2>
+            <p id="modal-time" style="color:#aaa; border-bottom:1px solid #333; padding-bottom:10px;">Time</p>
+            <p id="modal-desc" style="line-height:1.6; color:#ccc;">Desc</p>
+            <p><small id="modal-loc" style="color:#666">Location</small></p>
+        </div>
+    </div>
+
+<script>
+const API = 'https://src-backend-roau.onrender.com/api';
+    if (localStorage.getItem('userRole') !== 'student') window.location.href = 'login.html';
+    document.getElementById('student-name').textContent = localStorage.getItem('currentUser');
+
+    function showSection(id) {
+        document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        window.scrollTo(0, 0);
+        loadDataFor(id);
+    }
+    function goHome() { showSection('section-home'); }
+    function logout() { localStorage.clear(); window.location.href = 'login.html'; }
+
+    // --- COUNTDOWN LOGIC ---
+    function startGlobalCountdown(title, targetDateStr) {
+        if(!targetDateStr) return;
+        
+        const banner = document.getElementById('countdown-banner');
+        banner.style.display = 'flex'; // Changed to flex for the new bar layout
+        document.getElementById('countdown-event-name').textContent = title;
+
+        const targetDate = new Date(targetDateStr);
+
+        setInterval(() => {
+            const now = new Date();
+            const diff = targetDate - now;
+
+            if (diff <= 0) {
+                document.getElementById('countdown-timer').textContent = "HAPPENING NOW";
+                return;
+            }
+
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('countdown-timer').textContent = 
+                `${d}d : ${h}h : ${m}m : ${s}s`;
+        }, 1000);
+    }
+
+    // --- LOAD DATA ---
+    async function loadDataFor(sectionId) {
+        // HOME
+        if(sectionId === 'section-home') {
+            const data = await (await fetch(API + '/about')).json();
+            document.getElementById('display-desc').textContent = data.description;
+            document.getElementById('display-mission').textContent = data.mission;
+            document.getElementById('display-vision').textContent = data.vision;
+            document.getElementById('display-role').textContent = data.role;
+
+            if(data.countdownTarget) startGlobalCountdown(data.countdownTitle, data.countdownTarget);
+        }
+        // NOTICES
+        if(sectionId === 'section-notices') {
+            const data = await (await fetch(API + '/announcements')).json();
+            document.getElementById('notices-list').innerHTML = data.reverse().map(i => `<div class="content-card"><h3 style="color:#dc143c">${i.title}</h3><p>${i.content}</p><small style="color:#666;">📅 ${i.date}</small></div>`).join('');
+        }
+        // EVENTS
+        if(sectionId === 'section-events') {
+            const data = await (await fetch(API + '/events')).json();
+            document.getElementById('events-list').innerHTML = data.reverse().map(i => `<div class="content-card" onclick='openModal(${JSON.stringify(i)})' style="cursor:pointer;"><h3 style="color:#dc143c">${i.title}</h3><p>${i.date} @ ${i.location}</p></div>`).join('');
+        }
+        // MEMBERS
+        if(sectionId === 'section-about') {
+            const data = await (await fetch(API + '/members')).json();
+            document.getElementById('members-list').innerHTML = data.map(i => `<div class="content-card" style="display:flex; align-items:center; gap:15px;"><img src="${i.image||'images/im1.png'}" style="width:50px;height:50px;border-radius:50%; border:2px solid #dc143c;"><div><h3>${i.name}</h3><p style="color:#dc143c">${i.role}</p></div></div>`).join('');
+        }
+        // FAQ
+        if(sectionId === 'section-help') {
+            const data = await (await fetch(API + '/faqs')).json();
+            document.getElementById('faq-list').innerHTML = data.map(i => `<div class="content-card"><h4>Q: ${i.question}</h4><p style="color:#ccc">A: ${i.answer}</p></div>`).join('');
+        }
+        // CHAT
+        if(sectionId === 'section-chat') {
+            const res = await fetch(API + '/chats?t=' + Date.now());
+            const data = await res.json();
+            const myName = localStorage.getItem('currentUser');
+            const safeData = Array.isArray(data) ? data : [];
+            const myChats = safeData.filter(c => c.student === myName);
+            const chatBox = document.getElementById('chat-history');
+            
+            if(myChats.length === 0) chatBox.innerHTML = '<p style="text-align:center; color:#555;">No messages yet.</p>';
+            else chatBox.innerHTML = myChats.map(c => `<div class="chat-bubble ${c.sender === 'student'?'my-msg':'their-msg'}">${c.text}</div>`).join('');
+            
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    }
+
+    async function sendChat() {
+        const text = document.getElementById('chat-input').value;
+        if(!text) return;
+        await fetch(API + '/chat', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({student:localStorage.getItem('currentUser'), text, sender:'student'})});
+        document.getElementById('chat-input').value = '';
+        loadDataFor('section-chat');
+    }
+
+    async function performSearch() {
+        const query = document.getElementById('top-search').value.toLowerCase();
+        if(query.length > 0 && !document.getElementById('section-search').classList.contains('active')) showSection('section-search');
+        else if (query.length === 0) { goHome(); return; }
+        const notices = await (await fetch(API + '/announcements')).json();
+        const events = await (await fetch(API + '/events')).json();
+        const results = [...notices.map(i=>({...i,t:'Notice'})), ...events.map(i=>({...i,t:'Event'}))].filter(i => i.title.toLowerCase().includes(query));
+        document.getElementById('search-results').innerHTML = results.length ? results.map(i => `<div class="content-card"><h3>[${i.t}] ${i.title}</h3><p>${i.content||i.location}</p></div>`).join('') : '<p>No results found.</p>';
+    }
+
+    function openModal(item) {
+        document.getElementById('modal-title').textContent = item.title;
+        document.getElementById('modal-time').textContent = item.date + ' ' + (item.time || '');
+        document.getElementById('modal-desc').textContent = item.description;
+        document.getElementById('modal-loc').textContent = item.location;
+        document.getElementById('event-modal').style.display = 'flex';
+    }
+    function closeModal() { document.getElementById('event-modal').style.display = 'none'; }
+
+    loadDataFor('section-home');
+</script>
+<button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">🌙</button>
+
+<script>
+    // --- THEME LOGIC ---
+    function toggleTheme() {
+        document.body.classList.toggle('light-mode');
+        const isLight = document.body.classList.contains('light-mode');
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        document.getElementById('theme-btn').textContent = isLight ? '☀️' : '🌙';
+    }
+    // Load Saved Theme
+    if(localStorage.getItem('theme') === 'light') {
+        document.body.classList.add('light-mode');
+        document.getElementById('theme-btn').textContent = '☀️';
+    }
+</script>
+</body>
+</html>
